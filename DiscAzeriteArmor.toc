@@ -1,0 +1,9 @@
+## Interface: 80000
+## Title: DiscAzeriteArmor
+## Author: Johan "Noctoz" Gidlund
+## Version: 1.0
+## X-eMail: johan.gidlund@gmail.com
+## X-Website: http://www.github.com
+## Notes: Shows computed int value for Disc Priest Azerite Armor.
+
+DiscAzeriteArmor.lua
