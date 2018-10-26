@@ -2,6 +2,32 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 
 local powerData = {
+	[483] = {
+		["name"] = "Archive of the Titans",
+		["intValues"] = {
+			[340] = 160,
+			[345] = 160,
+			[355] = 178,
+			[360] = 196,
+			[370] = 214,
+			[375] = 214,
+			[385] = 249,
+			[390] = 249,
+		}
+	},
+	[487] = {
+		["name"] = "Retaliatory Fury",
+		["intValues"] = {
+			[340] = 148,
+			[345] = 154,
+			[355] = 169,
+			[360] = 178,
+			[370] = 195,
+			[375] = 204,
+			[385] = 224,
+			[390] = 235,
+		}
+	},
 	[195] = {
 		["name"] = "Secrets of the Deep",
 		["intValues"] = {
@@ -14,7 +40,7 @@ local powerData = {
 			[385] = 162,
 			[390] = 170,
 		}
-	}
+	},
 }
 
 function DiscAzeriteArmor_GetSpellID(powerID)
@@ -64,7 +90,7 @@ local OnTooltipSetItem = function(self, ...)
 					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) then
 						if (powerData[azeritePowerID]) then
 							local intValue = powerData[azeritePowerID]["intValues"][itemLevel]
-							azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..azeritePowerID..")("..intValue..")"
+							azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..azeritePowerID..") |cFF00FF00+"..intValue.." INT|r"
 						else
 							azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..azeritePowerID..")"
 						end
