@@ -54,47 +54,63 @@ end
 local OnTooltipSetItem = function(self, ...)
 	local name, item = self:GetItem()
 	if(item) then
-		local _, _, quality, itemLevel = GetItemInfo(item)
-		if(quality) then
-			local r, g, b = GetItemQualityColor(quality)
-
-			self:SetBackdropBorderColor(r, g, b)
-			self:SetBackdropColor(0, 0, 0, 1)
-		end
+		local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(item)
 		
 		if C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID(item) then
 			local specID = GetSpecializationInfo(GetSpecialization())
 			local allTierInfo = C_AzeriteEmpoweredItem.GetAllTierInfoByItemID(item)
 			
+			local owningItemSource = AzeriteEmpoweredItemDataSource:CreateFromFromItemLink(item);
+			local sourceItem = owningItemSource:GetItem();
+			if not sourceItem:IsItemDataCached() then
+				-- We'll try again later
+				return false;
+			end
+			
+			local equippedItemLocation = ItemLocation:CreateFromEquipmentSlot(sourceItem:GetInventoryType());
+			local equippedItemSource = AzeriteEmpoweredItemDataSource:CreateFromItemLocation(equippedItemLocation);
+			
 			if not allTierInfo then return end
 			
 			-- Create some separation from other tooltip text
 			self:AddLine(" ")
-			local debugText = "Debug: "..itemLevel
+			local debugText = "Power Intelligence Values"
 			self:AddLine(debugText)
 			
 			for j=1, 3 do
-				local tierLevel = allTierInfo[j]["unlockLevel"]
-				local azeritePowerID = allTierInfo[j]["azeritePowerIDs"][1]
+				local tierInfo = allTierInfo[j];
+				
+				local azeritePowerID = tierInfo["azeritePowerIDs"][1]
 
 				if azeritePowerID == 13 then break end -- Ignore +5 item level tier
-
-				if not allTierInfo[1]["azeritePowerIDs"][1] then return end
-
+				
 				local azeriteTooltipText = " "
-				for i, _ in pairs(allTierInfo[j]["azeritePowerIDs"]) do
-					local azeritePowerID = allTierInfo[j]["azeritePowerIDs"][i]
-					local azeriteSpellID = DiscAzeriteArmor_GetSpellID(azeritePowerID)				
+				
+				local comparisonPowerID = AzeriteUtil.GetSelectedAzeritePowerInTier(owningItemSource, j);
+				-- If we have selected a power we show that. If not we show all available
+				if comparisonPowerID then
+					local azeriteSpellID = DiscAzeriteArmor_GetSpellID(comparisonPowerID)				
 					local azeritePowerName, _, icon = GetSpellInfo(azeriteSpellID)
-					
-					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) then
-						if (powerData[azeritePowerID]) then
-							local intValue = powerData[azeritePowerID]["intValues"][itemLevel]
-							azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..azeritePowerID..") |cFF00FF00+"..intValue.." INT|r"
-						else
-							azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..azeritePowerID..")"
-						end
-					end			
+					if (powerData[comparisonPowerID]) then
+						local intValue = powerData[comparisonPowerID]["intValues"][itemLevel]
+						azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..comparisonPowerID..") |cFF00FF00+"..intValue.."|r Intellect"
+					else
+						azeriteTooltipText = azeriteTooltipText.."  "..azeritePowerName.."("..comparisonPowerID..")"
+					end
+				else
+					for powerIndex, azeritePowerID in ipairs(tierInfo.azeritePowerIDs) do
+						local azeriteSpellID = DiscAzeriteArmor_GetSpellID(azeritePowerID)				
+						local azeritePowerName, _, icon = GetSpellInfo(azeriteSpellID)
+						
+						if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) then
+							if (powerData[azeritePowerID]) then
+								local intValue = powerData[azeritePowerID]["intValues"][itemLevel]
+								azeriteTooltipText = azeriteTooltipText.." |cFFFFFFFF"..azeritePowerName.."("..azeritePowerID..") |cFF00FF00+"..intValue.."|r"
+							else
+								azeriteTooltipText = azeriteTooltipText.." |cFFFFFFFF"..azeritePowerName.."("..azeritePowerID..")|r"
+							end
+						end			
+					end
 				end
 				
 				self:AddLine(azeriteTooltipText)
