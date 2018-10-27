@@ -398,7 +398,7 @@ local OnTooltipSetItem = function(self, ...)
 			
 			-- Create some separation from other tooltip text
 			self:AddLine(" ")
-			local debugText = "Int value for Azerite traits"
+			local debugText = "Intellect from Azerite Powers:"
 			self:AddLine(debugText)
 			
 			local totalInt = 0
@@ -447,8 +447,8 @@ local OnTooltipSetItem = function(self, ...)
 			
 			local stats = GetItemStats(item)
 			
-			self:AddLine("Int from traits: |cFF00FF00+"..totalInt.."|r")
-			self:AddLine("Total Int for item: |cFFFFFFFF"..(stats["ITEM_MOD_INTELLECT_SHORT"] + totalInt).."|r")
+			self:AddLine("Total from Powers: |cFF00FF00+"..totalInt.." Intellect|r")
+			self:AddLine("Total: |cFFFFFFFF+"..(stats["ITEM_MOD_INTELLECT_SHORT"] + totalInt).." Intellect|r")
 			-- Create some spacing after
 			self:AddLine(" ")
 		end
