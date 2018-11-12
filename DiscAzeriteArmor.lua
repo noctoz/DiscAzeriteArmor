@@ -762,3 +762,5 @@ for _, obj in next, {
 		obj:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 	end
 end
+
+print("Using Disc Priest Azerite rankings from October 11th.")
