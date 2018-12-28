@@ -155,4 +155,4 @@ for _, obj in next, {
 	end
 end
 
-print("|cFF4863A0DiscAzeriteArmor 1.1-Beta loaded. Data updated November 14th.")
+print("|cFF4863A0DiscAzeriteArmor 1.2-Beta loaded. Data updated December 24th.")
