@@ -65,21 +65,21 @@ local OnTooltipSetItem = function(self, ...)
 					-- If the equipped location was not the item we are showing, find it in the bags
 					local bag, slot = DiscAzeriteArmor_GetBagPosition(itemLink)
 					if bag == nil or slot == nil then
-						print("Error! Could not find item location!")
-						return false
+						--print("Error! Could not find item location!")
+					else
+						--print("Setting location from bag and slot!")
+						actualItemLocation = ItemLocation:CreateFromBagAndSlot(bag, slot)
 					end
-					--print("Setting location from bag and slot!")
-					actualItemLocation = ItemLocation:CreateFromBagAndSlot(bag, slot)
 				end
 			else
 				-- If not azerite item equipped in slot, find it in the bags
 				local bag, slot = DiscAzeriteArmor_GetBagPosition(itemLink)
 				if bag == nil or slot == nil then
-					print("Error! Could not find item location!")
-					return false
+					--print("Error! Could not find item location!")
+				else
+					--print("Setting location from bag and slot!")
+					actualItemLocation = ItemLocation:CreateFromBagAndSlot(bag, slot)
 				end
-				--print("Setting location from bag and slot!")
-				actualItemLocation = ItemLocation:CreateFromBagAndSlot(bag, slot)
 			end
 			
 			-- Create some separation from other tooltip text
@@ -90,8 +90,21 @@ local OnTooltipSetItem = function(self, ...)
 			local selectedInt = 0
 			local totalInt = 0
 			
-			for j=1, 3 do
+			-- Figure out how many tiers we have
+			local tierCount = 0
+			for k, v in pairs(allTierInfo) do
+				tierCount = tierCount + 1
+			end
+			--print("Tier count"..tierCount)
+			
+			for j=1, 4 do
 				local tierInfo = allTierInfo[j];
+				
+				-- If we have 5 tiers then the first two are the same
+				local powerDataIndex = j
+				if (tierCount == 5 and j > 1) then
+					powerDataIndex = j - 1
+				end
 				
 				local highestTierInt = 0
 				
@@ -106,7 +119,7 @@ local OnTooltipSetItem = function(self, ...)
 					local azeritePowerName, _, icon = GetSpellInfo(azeriteSpellID)
 					
 					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) then
-						local intValue = n.powerData[j][azeritePowerID] and n.powerData[j][azeritePowerID]["intValues"][itemLevel] or 0
+						local intValue = n.powerData[powerDataIndex][azeritePowerID] and n.powerData[powerDataIndex][azeritePowerID]["intValues"][itemLevel] or 0
 						-- We get the highest value to present the total int of the item
 						if intValue > highestTierInt then
 							highestTierInt = intValue
@@ -115,7 +128,7 @@ local OnTooltipSetItem = function(self, ...)
 						-- Set color only for selected powers
 						local nameColor = "777777"
 						local intColor = "777777"
-						if C_AzeriteEmpoweredItem.IsPowerSelected(actualItemLocation, azeritePowerID) then
+						if actualItemLocation:HasAnyLocation() and C_AzeriteEmpoweredItem.IsPowerSelected(actualItemLocation, azeritePowerID) then
 							nameColor = "FFFFFF"
 							intColor = "00FF00"
 							selectedInt = selectedInt + intValue
