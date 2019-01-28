@@ -97,6 +97,8 @@ local OnTooltipSetItem = function(self, ...)
 			end
 			--print("Tier count"..tierCount)
 			
+			local stackedInfo = {}
+			
 			for j=1, 4 do
 				local tierInfo = allTierInfo[j];
 				
@@ -134,7 +136,16 @@ local OnTooltipSetItem = function(self, ...)
 							selectedInt = selectedInt + intValue
 						end
 						
-						azeriteTooltipText = azeriteTooltipText.." |cFF"..nameColor..azeritePowerName.." |cFF"..intColor.."+"..intValue.."|r"
+						azeriteTooltipText = azeriteTooltipText.." |cFF"..nameColor..azeritePowerName.." |cFF"..intColor.."+"..intValue
+						
+						-- Add info for stacked
+						if n.powerData[powerDataIndex][azeritePowerID] and n.powerData[powerDataIndex][azeritePowerID]["stacked"] then
+							--print("Found stacked trait "..azeritePowerName)
+							azeriteTooltipText = azeriteTooltipText.."*"
+							table.insert(stackedInfo, azeritePowerID)
+						end
+						
+						azeriteTooltipText = azeriteTooltipText.."|r"
 					end			
 				end
 				
@@ -148,6 +159,13 @@ local OnTooltipSetItem = function(self, ...)
 			self:AddLine("Optimal From Powers: |cFF00FF00+"..totalInt.." Intellect|r")
 			self:AddLine("Total: |cFFFFFFFF+"..(stats["ITEM_MOD_INTELLECT_SHORT"] + selectedInt).." Intellect|r")
 			self:AddLine("Optimal: |cFFFFFFFF+"..(stats["ITEM_MOD_INTELLECT_SHORT"] + totalInt).." Intellect|r")
+			self:AddLine(" ")
+			
+			-- Write stacked info
+			for i, info in ipairs(stackedInfo) do
+				self:AddLine("*|cFFFFFFFF"..n.powerData[1][info]["name"].."|r will only provide |cFFFFFFFF+"..n.powerData[1][info]["stacked"][itemLevel].."|r if stacked.")
+			end
+			
 			-- Create some spacing after
 			self:AddLine(" ")
 		end
