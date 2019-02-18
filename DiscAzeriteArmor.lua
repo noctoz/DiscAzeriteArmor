@@ -98,6 +98,7 @@ local OnTooltipSetItem = function(self, ...)
 			--print("Tier count"..tierCount)
 			
 			local stackedInfo = {}
+			local twoDotInfo = {}
 			
 			for j=1, 4 do
 				local tierInfo = allTierInfo[j];
@@ -145,6 +146,13 @@ local OnTooltipSetItem = function(self, ...)
 							table.insert(stackedInfo, azeritePowerID)
 						end
 						
+						-- Add info for two dots
+						if n.powerData[powerDataIndex][azeritePowerID] and n.powerData[powerDataIndex][azeritePowerID]["twoDot"] then
+							--print("Found stacked trait "..azeritePowerName)
+							azeriteTooltipText = azeriteTooltipText.."*"
+							table.insert(twoDotInfo, azeritePowerID)
+						end
+						
 						azeriteTooltipText = azeriteTooltipText.."|r"
 					end			
 				end
@@ -164,6 +172,11 @@ local OnTooltipSetItem = function(self, ...)
 			-- Write stacked info
 			for i, info in ipairs(stackedInfo) do
 				self:AddLine("*|cFFFFFFFF"..n.powerData[1][info]["name"].."|r will only provide |cFFFFFFFF+"..n.powerData[1][info]["stacked"][itemLevel].."|r if stacked.")
+			end
+			
+			-- Write two dot info
+			for i, info in ipairs(twoDotInfo) do
+				self:AddLine("*|cFFFFFFFF"..n.powerData[1][info]["name"].."|r will provide |cFFFFFFFF+"..n.powerData[1][info]["twoDot"][itemLevel].."|r with 2 DoTs.")
 			end
 			
 			-- Create some spacing after
