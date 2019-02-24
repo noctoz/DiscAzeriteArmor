@@ -181,6 +181,21 @@ local OnTooltipSetItem = function(self, ...)
 			
 			-- Create some spacing after
 			self:AddLine(" ")
+		elseif itemEquipLoc == "INVTYPE_TRINKET" then
+			local itemString = string.match(itemLink, "item[%-?%d:]+")
+			local _, itemIdString, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", itemString)
+			itemId = tonumber(itemIdString)
+			--print("Show data for trinket with id: "..itemId)
+
+			if n.trinketData[itemId] then
+				--print("Add tooltip for trinket with level: "..itemLevel)
+				-- Create some separation from other tooltip text
+				self:AddLine(" ")
+				self:AddLine("Estimated HPS Gain: |cFF00FF00+"..n.trinketData[itemId]["hpsValues"][itemLevel].."|r")
+
+				-- Create some spacing after
+				self:AddLine(" ")
+			end
 		end
 	end
 end
