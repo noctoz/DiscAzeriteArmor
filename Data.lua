@@ -1049,7 +1049,8 @@ n.powerData = {
 			},
 		},
 	},
-},
+}
+
 n.trinketData = {
 	[166793] = {
 		["name"] = "Ancient Knot of Wisdom",
