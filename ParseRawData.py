@@ -197,9 +197,9 @@ def main():
 		f.write("\t},\n") # end of tier
 
 	f.write("}\n") # end of n.powerData
+	f.write("\n") # create some space before trinket data
 
 	# Write trinket data
-	f.write("-- start of Trinket Data\n")
 	f.write("n.trinketData = {\n")
 			
 	for trinketName in sorted(trinketData):
