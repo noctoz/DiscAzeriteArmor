@@ -120,8 +120,11 @@ local OnTooltipSetItem = function(self, ...)
 				for powerIndex, azeritePowerID in ipairs(tierInfo.azeritePowerIDs) do
 					local azeriteSpellID = DiscAzeriteArmor_GetSpellID(azeritePowerID)				
 					local azeritePowerName, _, icon = GetSpellInfo(azeriteSpellID)
+					-- Enable this to get new azerite ids
+					--print(azeritePowerName..": "..azeritePowerID)
 					
-					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) then
+					-- 404 is Death Throes that needs to be specially included since it is not considered a disc power
+					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) or azeritePowerID == 404 then
 						local intValue = n.powerData[powerDataIndex][azeritePowerID] and n.powerData[powerDataIndex][azeritePowerID]["intValues"][itemLevel] or 0
 						-- We get the highest value to present the total int of the item
 						if intValue > highestTierInt then
@@ -214,4 +217,4 @@ for _, obj in next, {
 	end
 end
 
-print("|cFF4863A0DiscAzeriteArmor 1.8.0 loaded. Data updated April 17th 2019.")
+print("|cFF4863A0DiscAzeriteArmor 1.9.0 loaded. Data updated July 11th 2019.")

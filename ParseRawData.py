@@ -14,7 +14,7 @@ def main():
 	trinketIds = {}
 
 	# Not all levels might be present in raw data so we need to have it here
-	itemLevels = [340, 345, 355, 360, 370, 375, 385, 390, 400, 405, 415, 420]
+	itemLevels = [340, 345, 355, 360, 370, 375, 385, 390, 400, 405, 415, 420, 430, 435, 445, 450]
 	
 	for sheet in book.sheets():
 		# Azerite data is on the "RawAzerite" sheet
@@ -47,6 +47,10 @@ def main():
 					name = "Death Throes"
 					twoDot = True
 
+				# Need to add special handling for other cases
+				if name == "Loyal to the End (0 allies)":
+					name = "Loyal to the End"
+
 				tier = sheet.cell_value(row_idx, 5)
 
 				if rawData.get(tier) == None:
@@ -59,7 +63,7 @@ def main():
 				level = int(sheet.cell_value(row_idx, 1))
 				hps = float(sheet.cell_value(row_idx, 19))
 
-				hpsPerInt = 3.2
+				hpsPerInt = 3.16
 
 				intValue = hps / hpsPerInt
 
