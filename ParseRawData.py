@@ -218,7 +218,7 @@ def main():
 		f.write("\t\t[\"name\"] = \"%s\",\n" % trinketName)
 		f.write("\t\t[\"hpsValues\"] = {\n")
 
-		for level in range(300, 425, 5):
+		for level in range(300, 460, 5):
 			value = 0
 			if trinket.get(level) != None:
 				value = trinket[level]
