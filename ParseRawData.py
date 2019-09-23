@@ -63,7 +63,7 @@ def main():
 				level = int(sheet.cell_value(row_idx, 1))
 				hps = float(sheet.cell_value(row_idx, 19))
 
-				hpsPerInt = 3.16
+				hpsPerInt = 3.67
 
 				intValue = hps / hpsPerInt
 
