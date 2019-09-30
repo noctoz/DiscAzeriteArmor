@@ -217,4 +217,4 @@ for _, obj in next, {
 	end
 end
 
-print("|cFF4863A0DiscAzeriteArmor 1.9.0 loaded. Data updated September 9th 2019.")
+print("|cFF4863A0DiscAzeriteArmor 1.10.1 loaded. Data updated September 9th 2019.")
