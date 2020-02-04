@@ -125,6 +125,17 @@ local OnTooltipSetItem = function(self, ...)
 					
 					-- 404 is Death Throes that needs to be specially included since it is not considered a disc power
 					if C_AzeriteEmpoweredItem.IsPowerAvailableForSpec(azeritePowerID, specID) or azeritePowerID == 404 then
+						-- Uncomment to debug
+						--azeriteTooltipText = azeriteTooltipText.."|cFFFF0000["..powerDataIndex..", "..azeritePowerID..", "..itemLevel.."]|r "
+
+						--if n.powerData[powerDataIndex][azeritePowerID] then
+						--	azeriteTooltipText = azeriteTooltipText.."[a]"
+						--	if n.powerData[powerDataIndex][azeritePowerID]["intValues"][itemLevel] then
+						--		azeriteTooltipText = azeriteTooltipText.."[b]"
+						--	end
+						--end
+						-- End debug
+
 						local intValue = n.powerData[powerDataIndex][azeritePowerID] and n.powerData[powerDataIndex][azeritePowerID]["intValues"][itemLevel] or 0
 						-- We get the highest value to present the total int of the item
 						if intValue > highestTierInt then
@@ -217,4 +228,4 @@ for _, obj in next, {
 	end
 end
 
-print("|cFF4863A0DiscAzeriteArmor 1.10.1 loaded. Data updated September 9th 2019.")
+print("|cFF4863A0DiscAzeriteArmor 1.11.0 loaded. Data updated January 23th 2020.")

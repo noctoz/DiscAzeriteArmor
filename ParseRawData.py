@@ -14,12 +14,14 @@ def main():
 	trinketIds = {}
 
 	# Not all levels might be present in raw data so we need to have it here
-	itemLevels = [340, 345, 355, 360, 370, 375, 385, 390, 400, 405, 415, 420, 430, 435, 445, 450]
+	itemLevels = [340, 345, 355, 360, 370, 375, 385, 390, 400, 405, 415, 420, 430, 435, 445, 450, 455, 460, 465, 470, 475, 480, 485, 490]
 	
 	for sheet in book.sheets():
 		# Azerite data is on the "RawAzerite" sheet
 		if sheet.name == "RawAzerite":
 
+			lastName = "xxxxxxxxxxxxxxxx"
+			lastId = 999999
 			for row_idx in range(0,sheet.nrows):
 				# Get name
 				name = sheet.cell_value(row_idx, 3)
@@ -53,6 +55,14 @@ def main():
 
 				tier = sheet.cell_value(row_idx, 5)
 
+				# We read the tier from the first of each name
+				if name == lastName:
+					tier = lastTier
+				else:
+					lastTier = tier
+
+				lastName = name
+
 				if rawData.get(tier) == None:
 					rawData[tier] = {}
 
@@ -63,7 +73,7 @@ def main():
 				level = int(sheet.cell_value(row_idx, 1))
 				hps = float(sheet.cell_value(row_idx, 19))
 
-				hpsPerInt = 3.67
+				hpsPerInt = 4.73
 
 				intValue = hps / hpsPerInt
 
@@ -144,7 +154,8 @@ def main():
 	# Write azerite data
 	f.write("n.powerData = {\n")
 
-	tierIds = { "T3": 1, "T2": 2, "T1": 3 }
+	# T4 - T14 is just to handle input data problems
+	tierIds = { "T3": 1, "T2": 2, "T1": 3, "T4": 1, "T5": 1, "T6": 1, "T7": 1, "T8": 1, "T9": 1, "T10": 1, "T11": 1, "T12": 1, "T13": 1, "T14": 1 }
 			
 	# Process all tiers
 	for tierName in rawData:
@@ -218,7 +229,7 @@ def main():
 		f.write("\t\t[\"name\"] = \"%s\",\n" % trinketName)
 		f.write("\t\t[\"hpsValues\"] = {\n")
 
-		for level in range(300, 460, 5):
+		for level in range(300, 490, 5):
 			value = 0
 			if trinket.get(level) != None:
 				value = trinket[level]
