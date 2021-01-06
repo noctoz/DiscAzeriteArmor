@@ -34,11 +34,13 @@ local OnTooltipSetItem = function(self, ...)
 			local _, itemIdString, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", itemString)
 			itemId = tonumber(itemIdString)
 			--print("Show data for trinket with id: "..itemId)
+			-- Uncomment to debug item id
+			self:AddLine("ItemID: "..itemId)
 
 			if n.trinketData[itemId] then
 				--print("Add tooltip for trinket with level: "..itemLevel)
 				-- Create some separation from other tooltip text
-				self:AddLine(" ")
+				--self:AddLine(" ")
 				self:AddLine("Estimated HPS Gain: |cFF00FF00+"..n.trinketData[itemId]["hpsValues"][itemLevel].."|r")
 
 				-- Create some spacing after
@@ -51,17 +53,35 @@ end
 local OnConduitTooltip = function(self, ...)
 	--print("Entered OnConduitTooltip")
 	conduitID = select(1, ...)
-	print("ConduitID: "..conduitID)
+	--print("ConduitID: "..conduitID)
 	spellID = C_Soulbinds.GetConduitSpellID(conduitID, select(2, ...))
-	print("SpellID: "..spellID)
+	--print("SpellID: "..spellID)
 	conduitRank = C_Soulbinds.GetConduitRankFromCollection(conduitID)
-	print("ConduitRank: "..conduitRank)
+	--print("ConduitRank: "..conduitRank)
 	itemLevel = C_Soulbinds.GetConduitItemLevel(conduitID, conduitRank)
-	print("ItemLevel: "..itemLevel)
+	--print("ItemLevel: "..itemLevel)
 	-- Create some separation from other tooltip text
 	self:AddLine(" ")
-	hpsGain = 99
-	self:AddLine("Estimated HPS Gain: |cFF00FF00+"..hpsGain.."|r")
+
+	-- Uncomment to debug item id
+	self:AddLine("ConduitID: "..conduitID)
+
+	conduitData = n.conduitData[conduitID]
+	if conduitData then
+		self:AddLine("Estimated HPS Gain: |cFF00FF00+"..conduitData["hpsValues"][itemLevel].."|r")
+		if conduitData["special"] then
+			-- Handle special case 0
+			special0 = conduitData["special"][0]
+			if special0 then
+				self:AddLine("Estimated HPS Gain "..special0["desc"]..": |cFF00FF00+"..special0["values"][itemLevel].."|r")
+			end
+			-- Handle special case 1
+			special1 = conduitData["special"][1]
+			if special1 then
+				self:AddLine("Estimated HPS Gain "..special1["desc"]..": |cFF00FF00+"..special1["values"][itemLevel].."|r")
+			end
+		end
+	end
 end
 
 for _, obj in next, {
