@@ -1,10 +1,10 @@
-## Interface: 80300
-## Title: DiscAzeriteArmor
+## Interface: 90008
+## Title: DiscHelper
 ## Author: Johan "Noctoz" Gidlund
-## Version: 1.11.0
+## Version: 2.0.0
 ## X-eMail: johan.gidlund@gmail.com
-## X-Website: https://github.com/noctoz/DiscAzeriteArmor
-## Notes: Shows computed int value for Disc Priest Azerite Armor.
+## X-Website: https://github.com/noctoz/DiscHelper
+## Notes: Shows extra information to help you choose the best gear
 
 Data.lua
-DiscAzeriteArmor.lua
+DiscHelper.lua
