@@ -35,7 +35,7 @@ local OnTooltipSetItem = function(self, ...)
 			itemId = tonumber(itemIdString)
 			--print("Show data for trinket with id: "..itemId)
 			-- Uncomment to debug item id
-			self:AddLine("ItemID: "..itemId)
+			--self:AddLine("ItemID: "..itemId)
 
 			if n.trinketData[itemId] then
 				--print("Add tooltip for trinket with level: "..itemLevel)
@@ -46,6 +46,9 @@ local OnTooltipSetItem = function(self, ...)
 				-- Create some spacing after
 				self:AddLine(" ")
 			end
+		elseif C_Soulbinds.IsItemConduitByItemInfo(itemLink) then
+			-- This is what you see for unlearned conduits in your inventory
+			self:AddLine("DiscHelper data coming soon")
 		end
 	end
 end
@@ -64,7 +67,7 @@ local OnConduitTooltip = function(self, ...)
 	self:AddLine(" ")
 
 	-- Uncomment to debug item id
-	self:AddLine("ConduitID: "..conduitID)
+	--self:AddLine("ConduitID: "..conduitID)
 
 	conduitData = n.conduitData[conduitID]
 	if conduitData then
@@ -84,21 +87,45 @@ local OnConduitTooltip = function(self, ...)
 	end
 end
 
-for _, obj in next, {
-	GameTooltip,
-	ShoppingTooltip1,
-	ShoppingTooltip2,
-	ShoppingTooltip3,
-	ItemRefTooltip,
-} do
-	-- only show this for priest
-	local _,_,classId = UnitClass("player")
-	if classId == 5 then
-		obj:HookScript("OnTooltipSetItem", OnTooltipSetItem)
+function DiscHelper_DebugFindConduitId()
+	for i = 1, 282 do
+		local x = C_Soulbinds.GetConduitSpellID(i, 1)
+		if x ~= 0 then
+			local name = GetSpellInfo(x)
+			if name == "Fae Fermata" then
+				print("Conduit name: "..name.." id: "..i)
+			end
+		end
 	end
 end
 
---hooksecurefunc("TaskPOI_OnEnter", OnConduitTooltip)
-hooksecurefunc(GameTooltip, "SetConduit", OnConduitTooltip)
+function DiscHelper_Initialize()
+	local _,_,classId = UnitClass("player")
 
-print("|cFF4863A0DiscAzeriteArmor 1.11.0 loaded. Data updated January 23th 2020.")
+	-- Loop through the different tooltips and hook them
+	for _, obj in next, {
+		GameTooltip,
+		ShoppingTooltip1,
+		ShoppingTooltip2,
+		ShoppingTooltip3,
+		ItemRefTooltip,
+	} do
+		-- only show this for priest
+		if classId == 5 then
+			obj:HookScript("OnTooltipSetItem", OnTooltipSetItem)
+		end
+	end
+	
+	-- Need to hook this to display information in the conduit UI
+	if classId == 5 then
+		hooksecurefunc(GameTooltip, "SetConduit", OnConduitTooltip)
+	end
+	
+	print("|cFF4863A0DiscAzeriteArmor 1.11.0 loaded. Data updated January 23th 2020.")
+
+	-- Uncomment this to print out conduit ids
+	--DiscHelper_DebugFindConduitId()
+end
+
+-- This is the entry point
+DiscHelper_Initialize()
