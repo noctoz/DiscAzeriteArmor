@@ -121,7 +121,7 @@ function DiscHelper_Initialize()
 		hooksecurefunc(GameTooltip, "SetConduit", OnConduitTooltip)
 	end
 	
-	print("|cFF4863A0DiscAzeriteArmor 1.11.0 loaded. Data updated January 23th 2020.")
+	print("|cFF4863A0DiscHelper 2.0.0 loaded. Data updated January 11th 2021.")
 
 	-- Uncomment this to print out conduit ids
 	--DiscHelper_DebugFindConduitId()
