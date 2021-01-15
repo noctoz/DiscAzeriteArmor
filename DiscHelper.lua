@@ -28,7 +28,7 @@ local OnTooltipSetItem = function(self, ...)
 	if itemLink then
 		--print("ItemLink valid")
 		local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
-		
+
 		if itemEquipLoc == "INVTYPE_TRINKET" then
 			local itemString = string.match(itemLink, "item[%-?%d:]+")
 			local _, itemIdString, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", itemString)
@@ -37,7 +37,8 @@ local OnTooltipSetItem = function(self, ...)
 			-- Uncomment to debug item id
 			--self:AddLine("ItemID: "..itemId)
 
-			if n.trinketData[itemId] then
+			-- We do not have data for low level versions
+			if n.trinketData[itemId] and itemLevel >= 184 then
 				--print("Add tooltip for trinket with level: "..itemLevel)
 				-- Create some separation from other tooltip text
 				--self:AddLine(" ")
@@ -121,7 +122,7 @@ function DiscHelper_Initialize()
 		hooksecurefunc(GameTooltip, "SetConduit", OnConduitTooltip)
 	end
 	
-	print("|cFF4863A0DiscHelper 2.0.0 loaded. Data updated January 11th 2021.")
+	print("|cFF4863A0DiscHelper 2.0.1 loaded. Data updated January 15th 2021.")
 
 	-- Uncomment this to print out conduit ids
 	--DiscHelper_DebugFindConduitId()

@@ -1,7 +1,7 @@
 ## Interface: 90008
 ## Title: DiscHelper
 ## Author: Johan "Noctoz" Gidlund
-## Version: 2.0.0
+## Version: 2.0.1
 ## X-eMail: johan.gidlund@gmail.com
 ## X-Website: https://github.com/noctoz/DiscHelper
 ## Notes: Shows extra information to help you choose the best gear
